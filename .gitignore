@@ -1,26 +1,39 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
+# Ignore build system files
+.gradle/
+build/
+out/
 
-# idea
-out
-*.ipr
-*.iws
+# Ignore IDE-specific files
 *.iml
-.idea
+.idea/
+.vscode/
+*.swp
 
-# gradle
-build
-.gradle
+# Ignore logs and temporary files
+logs/
+*.log
+*.tmp
+*.bak
+*.class
 
-# other
-eclipse
-run
+# Ignore Minecraft-specific files
+run/
+config/
+mods/
+saves/
 
-# Files from Forge MDK
-forge*changelog.txt
-/.vs
+# Ignore dependency caches
+.gradle/
+**/build/
+**/out/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore specific files
+LICENSE.txt
+README.txt
+changelog.txt
+CREDITS.txt
