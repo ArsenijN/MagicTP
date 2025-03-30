@@ -1,0 +1,17 @@
+modLoader="javafml"
+loaderVersion="[47,)" # Forge version range
+license="All Rights Reserved"
+
+[[mods]]
+modId="magictp"
+version="${file.jarVersion}"
+displayName="Magic TP"
+description='''
+Magic TP makes teleportation magical!
+More magic!
+'''
+authors="arsenius_gen"
+logoFile="icon.png" # Path to the mod icon
+displayURL="https://github.com/ArsenijN/MagicTP" # Link to the mod's site
+credits="Special thanks to the Minecraft Forge team!"
+issueTrackerURL="https://github.com/ArsenijN/MagicTP/issues"
