@@ -23,23 +23,16 @@ public class TeleportEventHandler {
 
         Vec3 currentPos = player.position();
         Vec3 lastPos = lastPositions.get(player);
-        
+
         MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
         MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
 
         if (lastPos != null && currentPos.distanceTo(lastPos) > 5.0) { // Detects sudden large movement
-            if (!isTeleportingOtherPlayer(player)) {
-                suppressTeleportMessage(player);
-                sendMagicMessage(player, lastPos, currentPos);
-            }
+            suppressTeleportMessage(player);
+            sendMagicMessage(player, lastPos, currentPos);
         }
 
         lastPositions.put(player, currentPos);
-    }
-
-    private static boolean isTeleportingOtherPlayer(ServerPlayer player) {
-        // Always return false to ensure the magic teleportation message is sent
-        return false;
     }
 
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
@@ -58,17 +51,8 @@ public class TeleportEventHandler {
     }
 
     private static void suppressTeleportMessage(ServerPlayer player) {
-        // Suppress the default teleportation message
-        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.literal(""))); // Suppresses feedback messages
-
-        // Disable command feedback for the player
-        player.getServer().getCommands().getDispatcher().setConsumer((context, success, result) -> {
-            if (context.getSource().getTextName().equals(player.getName().getString())) {
-                context.getSource().sendSuccess(() -> Component.literal(""), false); // Suppress feedback output
-            }
-        });
-
-        // Reset command feedback globally for the player
-        player.getServer().getCommands().getDispatcher().setConsumer(null);
+        // Suppress the default teleportation message for this player only
+        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.literal("")));
+        MagicTP.LOGGER.debug("Suppressed teleport message for player: " + player.getName().getString());
     }
 }

@@ -13,8 +13,9 @@ public class ClientMagicMessageHandler {
     @SubscribeEvent
     public static void onChatMessage(ClientChatReceivedEvent event) {
         String rawMessage = event.getMessage().getString();
+        MagicTP.LOGGER.debug("Received chat message: " + rawMessage);
 
-        // Check if the message is a MagicTP message
+        // Check if the message is a MagicTP-specific message
         if (rawMessage.contains("|") && rawMessage.split("\\|").length == 4) {
             try {
                 String[] parts = rawMessage.split("\\|");
@@ -25,32 +26,33 @@ public class ClientMagicMessageHandler {
 
                 // Localize the message based on the client's language
                 String localizedMessage = getLocalizedMessage(playerName, x, y, z);
-                MagicTP.LOGGER.debug("Localized message: " + localizedMessage); // Log the localized message
+                MagicTP.LOGGER.debug("Localized message: " + localizedMessage);
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
-                MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage); // Log the sent message
+                MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage);
 
                 // Cancel the original raw message
                 event.setCanceled(true);
-                MagicTP.LOGGER.debug("Canceled original message: " + rawMessage); // Log the cancellation
+                MagicTP.LOGGER.debug("Canceled original MagicTP message: " + rawMessage);
             } catch (NumberFormatException e) {
                 MagicTP.LOGGER.error("Failed to parse MagicTP message: " + rawMessage, e);
             }
+        } else if (rawMessage.equals("An unexpected error occurred trying to execute that command")) {
+            // Suppress the "unexpected error" message
+            MagicTP.LOGGER.debug("Suppressing unexpected error message: " + rawMessage);
+            event.setCanceled(true);
+        } else {
+            MagicTP.LOGGER.debug("Message is not a MagicTP-specific message. Allowing it to pass through.");
         }
     }
 
     private static String getLocalizedMessage(String playerName, double x, double y, double z) {
         String coords = String.format("%.1f %.1f %.1f", x, y, z);
-        String lang = Minecraft.getInstance().getLanguageManager().getSelected(); // Fixed getCode() issue
+        String lang = Minecraft.getInstance().getLanguageManager().getSelected();
 
         return switch (lang) {
             case "uk_ua" -> playerName + " було магічно переміщено до " + coords;
             case "ru_ru" -> playerName + " был перемещён при помощи магии в " + coords;
             default -> playerName + " was moved with magic to " + coords;
         };
-    }
-
-    public static void displayMagicMessage(String playerName, double x, double y, double z) {
-        String message = playerName + " was moved with magic to " + String.format("%.1f %.1f %.1f", x, y, z);
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal(message));
     }
 }
