@@ -8,7 +8,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 @Mod("magictp")
-public class MainMod {
+public class MagicTP {
     public static final String MOD_ID = "magictp";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final boolean DEBUG;
@@ -19,7 +19,7 @@ public class MainMod {
         DEBUG = Boolean.parseBoolean(debugProperty);
     }
 
-    public MainMod() {
+    public MagicTP() {
         LOGGER.info("MagicTP Mod has loaded!");
         if (DEBUG) {
             LOGGER.info("Debug mode is enabled!");

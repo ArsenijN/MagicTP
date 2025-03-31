@@ -51,7 +51,7 @@ public class TeleportEventHandler {
         });
 
         // Log the raw data to the server console
-        MainMod.LOGGER.info("MagicTP: " + playerName + " was moved to " + x + " " + y + " " + z);
+        MagicTP.LOGGER.info("MagicTP: " + playerName + " was moved to " + x + " " + y + " " + z);
     }
 
     private static void suppressTeleportMessage(ServerPlayer player) {

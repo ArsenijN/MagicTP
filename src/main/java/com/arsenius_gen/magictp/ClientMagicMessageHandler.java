@@ -30,7 +30,7 @@ public class ClientMagicMessageHandler {
                 // Cancel the original raw message
                 event.setCanceled(true);
             } catch (NumberFormatException e) {
-                MainMod.LOGGER.error("Failed to parse MagicTP message: " + rawMessage, e);
+                MagicTP.LOGGER.error("Failed to parse MagicTP message: " + rawMessage, e);
             }
         }
     }
