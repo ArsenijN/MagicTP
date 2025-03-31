@@ -1,6 +1,19 @@
-{
-  "pack": {
-    "pack_format": 12,
-    "description": "My First Mod Resources"
-  }
-}
+modLoader="javafml"
+loaderVersion="[47,)" # Forge version range
+license="MIT"
+
+[[mods]]
+modId="magictp"
+version="${mod_version}-${devVersion}" # Include the devVersion in the mod version
+displayName="Magic TP"
+description='''
+Magic TP makes teleportation magical!
+More magic!
+'''
+authors="arsenius_gen"
+logoFile="icon.png" # Path to the mod icon
+displayURL="https://github.com/ArsenijN/MagicTP" # Link to the mod's site
+credits="Special thanks to the Minecraft Forge team!"
+issueTrackerURL="https://github.com/ArsenijN/MagicTP/issues"
+
+debug="${debug}" # Add this line

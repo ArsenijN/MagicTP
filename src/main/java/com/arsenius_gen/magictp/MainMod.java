@@ -11,7 +11,13 @@ import org.slf4j.Logger;
 public class MainMod {
     public static final String MOD_ID = "magictp";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final boolean DEBUG = Boolean.parseBoolean(System.getProperty("debug", "false")); // Read debug flag
+    public static final boolean DEBUG;
+
+    static {
+        // Read the debug flag from mods.toml
+        String debugProperty = System.getProperty("debug", "false");
+        DEBUG = Boolean.parseBoolean(debugProperty);
+    }
 
     public MainMod() {
         LOGGER.info("MagicTP Mod has loaded!");
