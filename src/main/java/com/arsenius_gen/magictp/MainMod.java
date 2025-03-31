@@ -11,9 +11,14 @@ import org.slf4j.Logger;
 public class MainMod {
     public static final String MOD_ID = "magictp";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final boolean DEBUG = Boolean.parseBoolean(System.getProperty("debug", "false")); // Read debug flag
 
     public MainMod() {
         LOGGER.info("MagicTP Mod has loaded!");
+        if (DEBUG) {
+            LOGGER.info("Debug mode is enabled!");
+        }
+
         MinecraftForge.EVENT_BUS.register(TeleportEventHandler.class);
 
         // Register client-side handlers only if running on the client

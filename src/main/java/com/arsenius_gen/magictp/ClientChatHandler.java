@@ -12,10 +12,20 @@ public class ClientChatHandler {
     public static void onChatMessage(ClientChatReceivedEvent event) {
         String message = event.getMessage().getString();
 
-        // Suppress messages like "[arsenius_gen: Teleported Arsenij_Mine to 0.500000, 0.000000, 0.500000]"
-        if (message.matches("\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]")) {
-            event.setCanceled(true); // Prevent the message from being displayed
+        if (MainMod.DEBUG) {
+            MainMod.LOGGER.info("Received chat message: " + message);
+        }
+
+        if (message.matches("\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]") || 
+            message.matches("\\[.*: Teleported .* to .*]") ||
+            message.matches("\\[.*: Телепортовано .* на -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]") || 
+            message.matches("\\[.*: Телепортовано .* до .*]") || 
+            message.matches("\\[.*: .* телепортирован в точку -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]") || 
+            message.matches("\\[.*: .* телепортирован к .*]")) {
+            event.setCanceled(true);
             MainMod.LOGGER.info("Suppressed teleportation message: " + message);
+        } else if (MainMod.DEBUG) {
+            MainMod.LOGGER.info("Message did not match suppression patterns: " + message);
         }
     }
 }
