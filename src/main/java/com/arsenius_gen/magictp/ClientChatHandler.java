@@ -11,10 +11,7 @@ public class ClientChatHandler {
     @SubscribeEvent
     public static void onChatMessage(ClientChatReceivedEvent event) {
         String message = event.getMessage().getString();
-
-        if (MagicTP.DEBUG) {
-            MagicTP.LOGGER.info("Received chat message: " + message);
-        }
+        MagicTP.LOGGER.debug("Received chat message: " + message);
 
         if (message.matches("\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]") || 
             message.matches("\\[.*: Teleported .* to .*]") ||
@@ -22,10 +19,10 @@ public class ClientChatHandler {
             message.matches("\\[.*: Телепортовано .* до .*]") || 
             message.matches("\\[.*: .* телепортирован в точку -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]") || 
             message.matches("\\[.*: .* телепортирован к .*]")) {
-            event.setCanceled(true);
-            MagicTP.LOGGER.info("Suppressed teleportation message: " + message);
-        } else if (MagicTP.DEBUG) {
-            MagicTP.LOGGER.info("Message did not match suppression patterns: " + message);
+            MagicTP.LOGGER.debug("Message matches teleportation pattern.");
+            // Handle the teleportation message
+        } else {
+            MagicTP.LOGGER.debug("Message does not match any teleportation pattern.");
         }
     }
 }

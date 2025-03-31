@@ -25,10 +25,13 @@ public class ClientMagicMessageHandler {
 
                 // Localize the message based on the client's language
                 String localizedMessage = getLocalizedMessage(playerName, x, y, z);
+                MagicTP.LOGGER.debug("Localized message: " + localizedMessage); // Log the localized message
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
+                MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage); // Log the sent message
 
                 // Cancel the original raw message
                 event.setCanceled(true);
+                MagicTP.LOGGER.debug("Canceled original message: " + rawMessage); // Log the cancellation
             } catch (NumberFormatException e) {
                 MagicTP.LOGGER.error("Failed to parse MagicTP message: " + rawMessage, e);
             }

@@ -23,6 +23,9 @@ public class TeleportEventHandler {
 
         Vec3 currentPos = player.position();
         Vec3 lastPos = lastPositions.get(player);
+        
+        MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
+        MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
 
         if (lastPos != null && currentPos.distanceTo(lastPos) > 5.0) { // Detects sudden large movement
             if (!isTeleportingOtherPlayer(player)) {

@@ -14,9 +14,11 @@ public class MagicTP {
     public static final boolean DEBUG;
 
     static {
-        // Read the debug flag from mods.toml
         String debugProperty = System.getProperty("debug", "false");
+        LOGGER.info("Debug property value: " + debugProperty); // Log the value of the debug property
         DEBUG = Boolean.parseBoolean(debugProperty);
+        LOGGER.info("DEBUG flag is set to: " + DEBUG); // Log the final value of DEBUG
+        //System.getProperties().forEach((key, value) -> LOGGER.info(key + ": " + value)); // Log all system properties
     }
 
     public MagicTP() {

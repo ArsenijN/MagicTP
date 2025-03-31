@@ -36,6 +36,7 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
+            args '-Ddebug=true' // Add this line
         }
 
         server {
@@ -102,9 +103,10 @@ tasks.named('jar', Jar).configure {
 
 // Pass the devVersion and other properties to the processResources task
 tasks.named('processResources', ProcessResources).configure {
-    def debug = project.hasProperty('debug') ? project.debug.toBoolean() : false
+    // Check for the debug property in both Gradle project properties and JVM system properties
+    def debug = project.hasProperty('debug') ? project.debug.toBoolean() : System.getProperty('debug', 'false').toBoolean()
     inputs.property("debug", debug)
-    
+
     var replaceProperties = [
             minecraft_version: minecraft_version,
             minecraft_version_range: minecraft_version_range,
