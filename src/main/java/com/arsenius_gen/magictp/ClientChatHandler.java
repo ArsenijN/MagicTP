@@ -13,10 +13,14 @@ public class ClientChatHandler {
         String message = event.getMessage().getString();
         MagicTP.LOGGER.debug("Received chat message: " + message);
 
-        // Process only teleportation-related messages
-        if (message.matches("Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+")) {
-            MagicTP.LOGGER.debug("Message matches teleportation pattern.");
-            // Handle the teleportation message
+        // Load regex patterns dynamically based on the current locale
+        String teleportRegex = LocaleRegexLoader.getRegex("teleport_regex");
+        String teleportRegexNamed = LocaleRegexLoader.getRegex("teleport_regex_named");
+
+        // Check if the message matches any teleportation pattern
+        if (message.matches(teleportRegex) || message.matches(teleportRegexNamed)) {
+            MagicTP.LOGGER.debug("Message matches teleportation pattern. Suppressing message.");
+            event.setCanceled(true); // Suppress the teleportation message
         } else {
             MagicTP.LOGGER.debug("Message does not match any teleportation pattern. Allowing it to pass through.");
         }

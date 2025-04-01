@@ -36,10 +36,6 @@ public class ClientMagicMessageHandler {
             } catch (NumberFormatException e) {
                 MagicTP.LOGGER.error("Failed to parse MagicTP message: " + rawMessage, e);
             }
-        } else if (rawMessage.equals("An unexpected error occurred trying to execute that command")) {
-            // Suppress the "unexpected error" message
-            MagicTP.LOGGER.debug("Suppressing unexpected error message: " + rawMessage);
-            event.setCanceled(true);
         } else {
             MagicTP.LOGGER.debug("Message is not a MagicTP-specific message. Allowing it to pass through.");
         }

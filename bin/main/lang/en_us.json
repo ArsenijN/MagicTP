@@ -1,0 +1,4 @@
+{
+    "teleport_regex": "^\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]$",
+    "teleport_regex_named": "^\\[.*: Teleported .* to .*\\]$"
+  }

@@ -18,7 +18,6 @@ public class MagicTP {
         LOGGER.info("Debug property value: " + debugProperty); // Log the value of the debug property
         DEBUG = Boolean.parseBoolean(debugProperty);
         LOGGER.info("DEBUG flag is set to: " + DEBUG); // Log the final value of DEBUG
-        //System.getProperties().forEach((key, value) -> LOGGER.info(key + ": " + value)); // Log all system properties
     }
 
     public MagicTP() {
@@ -27,6 +26,7 @@ public class MagicTP {
             LOGGER.info("Debug mode is enabled!");
         }
 
+        // Register server-side handlers
         MinecraftForge.EVENT_BUS.register(TeleportEventHandler.class);
 
         // Register client-side handlers only if running on the client

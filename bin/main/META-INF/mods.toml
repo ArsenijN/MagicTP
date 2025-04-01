@@ -7,7 +7,7 @@ modId="magictp"
 version="${mod_version}-${devVersion}" # Include the devVersion in the mod version
 displayName="Magic TP"
 description='''
-Magic TP makes teleportation magical!
+MagicTP makes teleportation magical!
 More magic!
 '''
 authors="arsenius_gen"
