@@ -14,6 +14,8 @@ import java.util.Map;
 public class TeleportEventHandler {
 
     private static final Map<ServerPlayer, Vec3> lastPositions = new HashMap<>();
+    private static final double TELEPORT_THRESHOLD = 5.0; // Distance threshold for teleportation
+    private static final double LOGGING_THRESHOLD = 1.0; // Distance threshold for logging
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -24,14 +26,19 @@ public class TeleportEventHandler {
         Vec3 currentPos = player.position();
         Vec3 lastPos = lastPositions.get(player);
 
-        MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
-        MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
+        // Log only if the player has moved more than the logging threshold
+        if (lastPos == null || currentPos.distanceTo(lastPos) > LOGGING_THRESHOLD) {
+            MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
+            MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
+        }
 
-        if (lastPos != null && currentPos.distanceTo(lastPos) > 5.0) { // Detects sudden large movement
+        // Detect teleportation (large movement)
+        if (lastPos != null && currentPos.distanceTo(lastPos) > TELEPORT_THRESHOLD) {
             suppressTeleportMessage(player);
             sendMagicMessage(player, lastPos, currentPos);
         }
 
+        // Update the last position
         lastPositions.put(player, currentPos);
     }
 
@@ -42,9 +49,11 @@ public class TeleportEventHandler {
         double z = to.z;
 
         // Send raw data to all players on the server
-        player.getServer().getPlayerList().getPlayers().forEach(p -> {
-            p.sendSystemMessage(Component.literal(playerName + "|" + x + "|" + y + "|" + z));
-        });
+        if (player.getServer() != null) {
+            player.getServer().getPlayerList().getPlayers().forEach(p -> {
+                p.sendSystemMessage(Component.literal(playerName + "|" + x + "|" + y + "|" + z));
+            });
+        }
 
         // Log the raw data to the server console
         MagicTP.LOGGER.info("MagicTP: " + playerName + " was moved to " + x + " " + y + " " + z);
