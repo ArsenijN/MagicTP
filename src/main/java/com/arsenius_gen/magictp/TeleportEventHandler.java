@@ -14,8 +14,6 @@ import java.util.Map;
 public class TeleportEventHandler {
 
     private static final Map<ServerPlayer, Vec3> lastPositions = new HashMap<>();
-    private static final double TELEPORT_THRESHOLD = 5.0; // Distance threshold for teleportation
-    private static final double LOGGING_THRESHOLD = 1.0; // Distance threshold for logging
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -26,16 +24,19 @@ public class TeleportEventHandler {
         Vec3 currentPos = player.position();
         Vec3 lastPos = lastPositions.get(player);
 
-        // Log only if the player has moved more than the logging threshold
-        if (lastPos == null || currentPos.distanceTo(lastPos) > LOGGING_THRESHOLD) {
-            MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
-            MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
-        }
+        double teleportThreshold = MagicTPConfig.COMMON.teleportThreshold.get();
+        double loggingThreshold = MagicTPConfig.COMMON.loggingThreshold.get();
 
         // Detect teleportation (large movement)
-        if (lastPos != null && currentPos.distanceTo(lastPos) > TELEPORT_THRESHOLD) {
+        if (lastPos != null && currentPos.distanceTo(lastPos) > teleportThreshold) {
             suppressTeleportMessage(player);
             sendMagicMessage(player, lastPos, currentPos);
+        }
+
+        // Log only if debugging is enabled
+        if (MagicTP.DEBUG && (lastPos == null || currentPos.distanceTo(lastPos) > loggingThreshold)) {
+            MagicTP.LOGGER.debug("The current position of " + player.getName().getString() + " is: " + currentPos);
+            MagicTP.LOGGER.debug("The last position of " + player.getName().getString() + " is: " + lastPos);
         }
 
         // Update the last position
@@ -44,24 +45,20 @@ public class TeleportEventHandler {
 
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
         String playerName = player.getName().getString();
-        double x = to.x;
-        double y = to.y;
-        double z = to.z;
+        String coords = String.format("%.1f %.1f %.1f", to.x, to.y, to.z);
 
-        // Send raw data to all players on the server
-        if (player.getServer() != null) {
-            player.getServer().getPlayerList().getPlayers().forEach(p -> {
-                p.sendSystemMessage(Component.literal(playerName + "|" + x + "|" + y + "|" + z));
-            });
-        }
+        // Get the localized message
+        String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
 
-        // Log the raw data to the server console
-        MagicTP.LOGGER.info("MagicTP: " + playerName + " was moved to " + x + " " + y + " " + z);
+        // Send the localized message to the player
+        player.sendSystemMessage(Component.literal(localizedMessage));
+
+        // Log the localized message to the server console
+        MagicTP.LOGGER.info("MagicTP: " + localizedMessage);
     }
 
     private static void suppressTeleportMessage(ServerPlayer player) {
-        // Suppress the default teleportation message for this player only
-        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.literal("")));
+        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.empty()));
         MagicTP.LOGGER.debug("Suppressed teleport message for player: " + player.getName().getString());
     }
 }

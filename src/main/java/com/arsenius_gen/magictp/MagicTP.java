@@ -1,9 +1,14 @@
 package com.arsenius_gen.magictp;
 
+import com.arsenius_gen.magictp.client.MagicTPConfigScreen;
+import com.arsenius_gen.magictp.commands.MagicTPCommand;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
@@ -15,9 +20,9 @@ public class MagicTP {
 
     static {
         String debugProperty = System.getProperty("debug", "false");
-        LOGGER.info("Debug property value: " + debugProperty); // Log the value of the debug property
+        LOGGER.info("Debug property value: " + debugProperty);
         DEBUG = Boolean.parseBoolean(debugProperty);
-        LOGGER.info("DEBUG flag is set to: " + DEBUG); // Log the final value of DEBUG
+        LOGGER.info("DEBUG flag is set to: " + DEBUG);
     }
 
     public MagicTP() {
@@ -33,6 +38,19 @@ public class MagicTP {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             MinecraftForge.EVENT_BUS.register(ClientChatHandler.class);
             MinecraftForge.EVENT_BUS.register(ClientMagicMessageHandler.class);
+
+            // Register the config screen
+            MagicTPConfigScreen.register();
         }
+
+        // Register the configuration
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MagicTPConfig.COMMON_SPEC);
+
+        // Register commands
+        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
+    }
+
+    private void onRegisterCommands(RegisterCommandsEvent event) {
+        MagicTPCommand.register(event.getDispatcher());
     }
 }

@@ -1,6 +1,7 @@
 package com.arsenius_gen.magictp;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -31,9 +32,10 @@ public class ClientMagicMessageHandler {
                 String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
                 MagicTP.LOGGER.debug("Localized message: " + localizedMessage);
 
-                // Send the localized message to the player
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
-                MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage);
+                if (Minecraft.getInstance().player != null) {
+                    Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
+                    MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage);
+                }
 
                 // Cancel the original raw message
                 event.setCanceled(true);

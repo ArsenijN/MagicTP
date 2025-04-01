@@ -9,18 +9,29 @@ import java.nio.charset.StandardCharsets;
 
 public class LocaleRegexLoader {
     private static final String DEFAULT_LOCALE = "en_us";
+    private static JsonObject cachedLocaleData = null;
+    private static String cachedLocale = null;
 
-    public static String getRegex(String key) {
+    private static JsonObject loadLocaleData() {
         String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
-        MagicTP.LOGGER.debug("Current locale: " + currentLocale);
+        if (cachedLocale != null && cachedLocale.equals(currentLocale)) {
+            return cachedLocaleData; // Return cached data if the locale hasn't changed
+        }
 
-        // Try to load the locale-specific file
+        MagicTP.LOGGER.debug("Loading locale data for: " + currentLocale);
         JsonObject localeData = loadLocaleFile(currentLocale);
         if (localeData == null) {
             MagicTP.LOGGER.warn("Locale file for " + currentLocale + " not found. Falling back to default locale: " + DEFAULT_LOCALE);
             localeData = loadLocaleFile(DEFAULT_LOCALE);
         }
 
+        cachedLocale = currentLocale;
+        cachedLocaleData = localeData;
+        return localeData;
+    }
+
+    public static String getRegex(String key) {
+        JsonObject localeData = loadLocaleData();
         if (localeData != null && localeData.has(key)) {
             return localeData.get(key).getAsString();
         } else {
@@ -30,16 +41,7 @@ public class LocaleRegexLoader {
     }
 
     public static String getLocalizedMessage(String key, String player, String coords) {
-        String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
-        MagicTP.LOGGER.debug("Current locale: " + currentLocale);
-
-        // Try to load the locale-specific file
-        JsonObject localeData = loadLocaleFile(currentLocale);
-        if (localeData == null) {
-            MagicTP.LOGGER.warn("Locale file for " + currentLocale + " not found. Falling back to default locale: " + DEFAULT_LOCALE);
-            localeData = loadLocaleFile(DEFAULT_LOCALE);
-        }
-
+        JsonObject localeData = loadLocaleData();
         if (localeData != null && localeData.has(key)) {
             String messageTemplate = localeData.get(key).getAsString();
             return messageTemplate.replace("{player}", player).replace("{coords}", coords);
