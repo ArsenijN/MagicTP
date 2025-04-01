@@ -24,9 +24,14 @@ public class ClientMagicMessageHandler {
                 double y = Double.parseDouble(parts[2]);
                 double z = Double.parseDouble(parts[3]);
 
-                // Localize the message based on the client's language
-                String localizedMessage = getLocalizedMessage(playerName, x, y, z);
+                // Format the coordinates
+                String coords = String.format("%.1f %.1f %.1f", x, y, z);
+
+                // Get the localized message
+                String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
                 MagicTP.LOGGER.debug("Localized message: " + localizedMessage);
+
+                // Send the localized message to the player
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
                 MagicTP.LOGGER.debug("Sent localized message to player: " + localizedMessage);
 
@@ -39,16 +44,5 @@ public class ClientMagicMessageHandler {
         } else {
             MagicTP.LOGGER.debug("Message is not a MagicTP-specific message. Allowing it to pass through.");
         }
-    }
-
-    private static String getLocalizedMessage(String playerName, double x, double y, double z) {
-        String coords = String.format("%.1f %.1f %.1f", x, y, z);
-        String lang = Minecraft.getInstance().getLanguageManager().getSelected();
-
-        return switch (lang) {
-            case "uk_ua" -> playerName + " було магічно переміщено до " + coords;
-            case "ru_ru" -> playerName + " был перемещён при помощи магии в " + coords;
-            default -> playerName + " was moved with magic to " + coords;
-        };
     }
 }

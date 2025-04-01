@@ -29,6 +29,26 @@ public class LocaleRegexLoader {
         }
     }
 
+    public static String getLocalizedMessage(String key, String player, String coords) {
+        String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
+        MagicTP.LOGGER.debug("Current locale: " + currentLocale);
+
+        // Try to load the locale-specific file
+        JsonObject localeData = loadLocaleFile(currentLocale);
+        if (localeData == null) {
+            MagicTP.LOGGER.warn("Locale file for " + currentLocale + " not found. Falling back to default locale: " + DEFAULT_LOCALE);
+            localeData = loadLocaleFile(DEFAULT_LOCALE);
+        }
+
+        if (localeData != null && localeData.has(key)) {
+            String messageTemplate = localeData.get(key).getAsString();
+            return messageTemplate.replace("{player}", player).replace("{coords}", coords);
+        } else {
+            MagicTP.LOGGER.error("Failed to load localized message for key: " + key);
+            return player + " was moved with magic to " + coords; // Fallback message
+        }
+    }
+
     private static JsonObject loadLocaleFile(String locale) {
         try (InputStreamReader reader = new InputStreamReader(
                 LocaleRegexLoader.class.getResourceAsStream("/lang/" + locale + ".json"), StandardCharsets.UTF_8)) {
