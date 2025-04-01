@@ -8,14 +8,17 @@
 - [ ] Allow to enable and disable different parts of the MagicTP (like /rtp and other)
 - [ ] Move handling of the /tp to the local
 
+
+# Changes: i179
+- [x] Tested ru_ru locale (for correct regex usage)
+
 # Changes: i178
 - [x] Reduced debug logs about player movements (by making threshold)
-- [x] Tested ru_ru locale
+- [x] UNtested ru_ru locale
 - [x] Make configs (in mod menu and by `/magictp` command)
 - - Commands:
 - - `/magictp get [Variable]`
 - - `/magictp set [Variable] [Value]`
-
 
 # Changes: i149
 - [x] Fix "An unexpected error was appeared"
