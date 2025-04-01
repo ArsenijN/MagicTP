@@ -2,6 +2,7 @@
 .gradle/
 build/
 out/
+bin/
 
 # Ignore IDE-specific files
 *.iml
@@ -37,5 +38,5 @@ LICENSE.txt
 README.txt
 changelog.txt
 CREDITS.txt
-build-counter.txt
+#build-counter.txt
 cc.md
