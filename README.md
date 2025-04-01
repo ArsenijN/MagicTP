@@ -8,4 +8,5 @@ Known problems: aka ToDo
 - [ ] **lack of the extensions (like /rtp with ranges)**
 - [ ] **Git is hard for me and I accidentally deleted commits with working sources... but because I'm lucky - I restored "pre-last" commit**
 
-Please consider to use compiled builds instead using source code to build. The source code may not work at all, like for now (except debug message that about MagicTP mod was loaded)
+Please consider to use compiled builds instead using source code to build. The source code may not work at all
+Also, the DEVLOG.md have more detailed tasks and the "changelog"
