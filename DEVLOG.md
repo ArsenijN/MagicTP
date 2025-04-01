@@ -1,7 +1,15 @@
 # Upcoming changes:
 - [ ] Test that in-game change of locale didn't break anything
-- [ ] More verbose debugging
+- [ ] Forgotten and not tested ru_ru locale
+- [ ] Message about untranslated locale and way to do (by creating issue request for adding the locale)
+- [ ] More verbose debugging (later)
 - [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin, *100, no floating point allowed, min `1`)
+- [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically")
+- [ ] Make config
+- [ ] Allow to disable the player location disclosure
+- [ ] Allow to enable and disable different parts of the MagicTP (like /rtp and other)
+- [ ] Make a simple GUI for config editing. Or make usage for the some API that can change mods' configs
+- [ ] Move handling of the /tp to the local
 
 # Changes: i149
 - [x] Fix "An unexpected error was appeared"
