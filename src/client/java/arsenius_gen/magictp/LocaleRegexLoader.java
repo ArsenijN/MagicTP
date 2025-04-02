@@ -1,11 +1,14 @@
-package com.arsenius_gen.magictp;
+package arsenius_gen.magictp;
+
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.client.Minecraft;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.MinecraftClient;
 
 public class LocaleRegexLoader {
     private static final String DEFAULT_LOCALE = "en_us";
@@ -13,8 +16,7 @@ public class LocaleRegexLoader {
     private static String cachedLocale = null;
 
     private static JsonObject loadLocaleData() {
-        String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
-        if (cachedLocale != null && cachedLocale.equals(currentLocale)) {
+        String currentLocale = MinecraftClient.getInstance().getLanguageManager().getSelected();        if (cachedLocale != null && cachedLocale.equals(currentLocale)) {
             return cachedLocaleData; // Return cached data if the locale hasn't changed
         }
 
