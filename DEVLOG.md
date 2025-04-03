@@ -2,11 +2,12 @@
 - [ ] Test that in-game change of locale didn't break anything
 - [ ] Message about untranslated locale and way to do (by creating issue request for adding the locale)
 - [ ] More verbose debugging (later)
-- [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin×100, no floating point allowed, min `1`)
+- [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
+- [ ] make `/rtp` works with config for default /rtp behaviour 
 - [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically" message)
 - [ ] Allow to disable the player location disclosure
-- [ ] Allow to enable and disable different parts of the MagicTP (like /rtp and other)
-- [ ] Move handling of the /tp to the local
+- [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
+- [ ] Move handling of the `/tp` to the local
 
 
 # Changes: i179
