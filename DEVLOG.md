@@ -1,16 +1,23 @@
 # Upcoming changes:
-- [] Allow to enable and disable different parts of the MagicTP (like location disclosure that didn't added previously)
+- [ ] Allow change some settings about player disclosure visually
 - [ ] Add more Forge Minecraft versions (test what versions are supported)
 - [ ] Workout with Fabric
 - [ ] Test out the Neoforge and Quilt
-- [ ] Change locale message so it will be shown every time locale was changed to the uncompatible (and show the list of compatible like "..., compatible locales was: [en_us, uk_ua, ru_ru], change to one of them for proper message suppression. ...")
-- [ ] 
 - [ ] More verbose debugging (later)
 - [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
 - [ ] make `/rtp` works with config for default /rtp behaviour 
 - [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically" message)
 - [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
 - [ ] Move handling of the `/tp` to the local
+
+# Changes: i276
+- [x] Allow to enable and disable different parts of the MagicTP (like location disclosure that didn't added previously) (change playerDisclosure in config)
+
+# Changes: i274
+- [x] Add ry_ua locale
+- [x] Better message about unsupported language
+- [x] Now own locales can be added to `\mods\magictp\lang\[locale_name].json`
+- [x] Change locale message so it will be shown every time locale was changed to the uncompatible (and show the list of compatible like "..., compatible locales was: [en_us, uk_ua, ru_ru], change to one of them for proper message suppression. ...")
 
 # Changes: i265
 - [x] Backwards-compatibility with messageV1 type

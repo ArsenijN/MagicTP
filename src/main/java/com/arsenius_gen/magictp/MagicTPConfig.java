@@ -31,8 +31,8 @@ public class MagicTPConfig {
                 .define("showExtendedConfigurables", false);
             
             playerDisclosure = builder
-                .comment("Message player coordinates in the global teleportation message")
-                .define("playerDisclosure", true);
+                .comment("Message shown when player coordinates are hidden")
+                .define("playerDisclosure", true); //"Player was moved by magic, but coordinates are hidden.");
         
             announceUnsupportedLocaleOnJoin = builder
                 .comment("Announce unsupported locale in chat when the player joins or switches locale")

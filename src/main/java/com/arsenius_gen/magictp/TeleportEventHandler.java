@@ -46,19 +46,26 @@ public class TeleportEventHandler {
 
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
         String playerName = player.getName().getString();
-
-        // Compress and encode the player's name and coordinates
-
-        //Add config logic here about player disclosure
-        String compressedData = compressData(playerName, to);
-        String encodedData = Base64.getEncoder().encodeToString(compressedData.getBytes());
-
-        // Create the global message with a clickable link
-        Component globalMessage = Component.literal("[MC" + encodedData + "]\n")
-            .append(Component.literal(playerName + " was moved by magic! To view what coordinates and translate this message, install MagicTP from ")
+        boolean discloseCoords = MagicTPConfig.COMMON.playerDisclosure.get();
+    
+        String messageText;
+        if (discloseCoords) {
+            // Encode coordinates
+            String compressedData = compressData(playerName, to);
+            String encodedData = Base64.getEncoder().encodeToString(compressedData.getBytes());
+    
+            messageText = "[MC" + encodedData + "]\n" + playerName + " was moved by magic!";
+        } else {
+            // Use the alternative message
+            messageText = "[MC" + "]\n" + playerName + " was moved by magic!";
+        }
+    
+        // Create the global message
+        Component globalMessage = Component.literal(messageText)
+            .append(Component.literal(" To view more, install MagicTP from ")
                 .append(Component.literal("Modrinth")
                     .withStyle(style -> style
-                        .withColor(0x00FF00) // Green color for the link
+                        .withColor(0x00FF00)
                         .withClickEvent(new net.minecraft.network.chat.ClickEvent(
                             net.minecraft.network.chat.ClickEvent.Action.OPEN_URL,
                             "https://modrinth.com/mod/magictp"
@@ -70,25 +77,21 @@ public class TeleportEventHandler {
                     )
                 )
             );
-
-        // Send the global message to all players
+    
+        // Send message
         player.getServer().getPlayerList().broadcastSystemMessage(globalMessage, false);
-
-        // Log the message to the server console
-        MagicTP.LOGGER.info("MagicTP: Sent encoded message: " + globalMessage.getString());
+    
+        MagicTP.LOGGER.info("MagicTP: Sent teleport message: " + messageText);
     }
+    
 
     private static void suppressTeleportMessage(ServerPlayer player) {
         player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.empty()));
         MagicTP.LOGGER.debug("Suppressed teleport message for player: " + player.getName().getString());
     }
 
-    // Compress the player's name and coordinates into a compact string
     private static String compressData(String playerName, Vec3 coords) {
-        // Encode the player's name using Base64
         String encodedName = Base64.getEncoder().encodeToString(playerName.getBytes());
-    
-        // Compress the coordinates into a compact string
         String x = String.format("%.1f", coords.x);
         String y = String.format("%.1f", coords.y);
         String z = String.format("%.1f", coords.z);
@@ -108,14 +111,11 @@ public class TeleportEventHandler {
                 case '9' -> 9;
                 case '.' -> 10;
                 case '|' -> 11;
-                case '-' -> 12; // Add support for negative coordinates
+                case '-' -> 12;
                 default -> throw new IllegalArgumentException("Invalid character in coordinates: " + c);
             };
             compressedCoords.append(Integer.toHexString(value));
         }
-    
-        MagicTP.LOGGER.debug("Combined the encoded name and compressed coordinates: " + encodedName + ":" + compressedCoords);
-        // Combine the encoded name and compressed coordinates using a delimiter
         return encodedName + ":" + compressedCoords;
     }
 }

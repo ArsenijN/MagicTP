@@ -9,13 +9,19 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocaleRegexLoader {
     private static final String DEFAULT_LOCALE = "en_us";
+    private static String[] internalLocales = {"en_us", "uk_ua", "ry_ua", "ru_ru"}; // Add any other built-in locales here
     private static JsonObject cachedLocaleData = null;
     private static String cachedLocale = null;
 
@@ -41,7 +47,7 @@ public class LocaleRegexLoader {
             if (Minecraft.getInstance().player != null) {
                 if (MagicTPConfig.COMMON.announceUnsupportedLocaleOnJoin.get() && !joinAnnouncementSent) {
                     Minecraft.getInstance().player.sendSystemMessage(
-                        Component.literal(getMissingLanguageMessage(currentLocale))
+                        getMissingLanguageMessage(currentLocale)
                     );
                     joinAnnouncementSent = true;
                 }
@@ -64,10 +70,79 @@ public class LocaleRegexLoader {
         }
     }
 
-    public static String getMissingLanguageMessage(String lang) {
-        return "This language (" + lang + ") isn't supported right now. " +
-               "You can create /mods/magictp/lang/" + lang + ".json to add your own language, " +
-               "or open an issue on https://github.com/ArsenijN/MagicTP/issues";
+    public static Component getMissingLanguageMessage(String lang) {
+        // Get list of available locales
+        List<String> availableLocales = getAvailableLocales();
+        StringBuilder localesText = new StringBuilder();
+        
+        if (!availableLocales.isEmpty()) {
+            localesText.append("Available locales: ");
+            for (int i = 0; i < availableLocales.size(); i++) {
+                localesText.append(availableLocales.get(i));
+                if (i < availableLocales.size() - 1) {
+                    localesText.append(", ");
+                }
+            }
+        } else {
+            localesText.append("No additional locales found");
+        }
+
+        return Component.literal("")
+            .append("MagicTP: This language (" + lang + ") isn't supported right now. ")
+            .append("You can create /mods/magictp/lang/" + lang + ".json to add your own language, ")
+            .append("or open an issue on ")
+            .append(Component.literal("GitHub")
+                .withStyle(style -> style
+                    .withColor(0xcef2ac)
+                    .withClickEvent(new net.minecraft.network.chat.ClickEvent(
+                        net.minecraft.network.chat.ClickEvent.Action.OPEN_URL,
+                        "https://github.com/ArsenijN/MagicTP/issues"
+                    ))
+                    .withHoverEvent(new net.minecraft.network.chat.HoverEvent(
+                        net.minecraft.network.chat.HoverEvent.Action.SHOW_TEXT,
+                        Component.literal("Click to open the MagicTP GitHub issue page")
+                    )))
+            )
+            .append(Component.literal(" so we will add it in later builds. Thanks!\n"))
+            .append(Component.literal(localesText.toString()));
+    }
+
+    /**
+     * Get a list of all available locales from both internal resources and external directories
+     */
+    public static List<String> getAvailableLocales() {
+        List<String> locales = new ArrayList<>();
+        
+        // Add internal locales from resources
+        try {
+            File modsDir = new File(Minecraft.getInstance().gameDirectory, "mods");
+            File langDir = new File(modsDir, "magictp/lang");
+            
+            // Check external files first
+            if (langDir.exists() && langDir.isDirectory()) {
+                File[] files = langDir.listFiles((dir, name) -> name.endsWith(".json"));
+                if (files != null) {
+                    for (File file : files) {
+                        String localeName = file.getName().replace(".json", "");
+                        locales.add(localeName);
+                    }
+                }
+            }
+            
+            // Add internal resource locales
+            // This is a simplified approach - you may need to adjust based on your actual
+            // resource loading mechanism
+            // String[] internalLocales = {"en_us"}; // Add any other built-in locales
+            for (String locale : internalLocales) {
+                if (!locales.contains(locale)) {
+                    locales.add(locale);
+                }
+            }
+        } catch (Exception e) {
+            MagicTP.LOGGER.error("Failed to get available locales", e);
+        }
+        
+        return locales;
     }
 
     public static String getLocalizedMessage(String key, String player, String coords) {
@@ -102,11 +177,16 @@ public class LocaleRegexLoader {
             return null;
         }
     }
+    
     public static void resetJoinAnnouncementFlag() {
         joinAnnouncementSent = false;
     }
+    
     @Mod.EventBusSubscriber(modid = MagicTP.MOD_ID, value = Dist.CLIENT)
-    public class ClientEventHandler {
+    public static class ClientEventHandler {
+        // Previous cached locale to detect changes
+        private static String previousLocale = null;
+        
         @SubscribeEvent
         public static void onPlayerLogout(ClientPlayerNetworkEvent.LoggingOut event) {
             LocaleRegexLoader.resetJoinAnnouncementFlag();
@@ -116,14 +196,42 @@ public class LocaleRegexLoader {
         public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggingIn event) {
             Minecraft.getInstance().execute(() -> {
                 String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
+                previousLocale = currentLocale;
                 if (!LocaleRegexLoader.isLocaleSupported(currentLocale)) {
                     if (MagicTPConfig.COMMON.announceUnsupportedLocaleOnJoin.get()) {
                         Minecraft.getInstance().player.sendSystemMessage(
-                            Component.literal(LocaleRegexLoader.getMissingLanguageMessage(currentLocale))
+                            LocaleRegexLoader.getMissingLanguageMessage(currentLocale)
                         );
                     }
                 }
             });
+        }
+        
+        @SubscribeEvent
+        public static void onLanguageScreenClosed(ScreenEvent.Closing event) {
+            // Check if the screen being closed is the language selection screen
+            if (event.getScreen() instanceof LanguageSelectScreen && Minecraft.getInstance().player != null) {
+                Minecraft.getInstance().execute(() -> {
+                    String currentLocale = Minecraft.getInstance().getLanguageManager().getSelected();
+                    
+                    // Check if locale has changed and is different from previous
+                    if (previousLocale != null && !currentLocale.equals(previousLocale)) {
+                        // Reset cache to force reload
+                        cachedLocale = null;
+                        cachedLocaleData = null;
+                        
+                        // If the new locale is not supported, send message
+                        if (!LocaleRegexLoader.isLocaleSupported(currentLocale)) {
+                            Minecraft.getInstance().player.sendSystemMessage(
+                                LocaleRegexLoader.getMissingLanguageMessage(currentLocale)
+                            );
+                        }
+                    }
+                    
+                    // Update previous locale
+                    previousLocale = currentLocale;
+                });
+            }
         }
     }
 }
