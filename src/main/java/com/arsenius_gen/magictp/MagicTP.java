@@ -45,7 +45,7 @@ public class MagicTP {
 
         // Register the configuration
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MagicTPConfig.COMMON_SPEC);
-
+        
         // Register commands
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }

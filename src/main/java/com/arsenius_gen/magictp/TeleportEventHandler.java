@@ -9,6 +9,7 @@ import net.minecraftforge.event.TickEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Base64;
 
 @Mod.EventBusSubscriber
 public class TeleportEventHandler {
@@ -45,20 +46,32 @@ public class TeleportEventHandler {
 
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
         String playerName = player.getName().getString();
-        String coords = String.format("%.1f %.1f %.1f", to.x, to.y, to.z);
-
-        // Get the localized message
-        String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
-
-        // Send the localized message to the player
-        player.sendSystemMessage(Component.literal(localizedMessage));
-
-        // Log the localized message to the server console
-        MagicTP.LOGGER.info("MagicTP: " + localizedMessage);
+    
+        // Compress and encode the coordinates
+        String compressedCoords = compressCoordinates(to);
+        String encodedCoords = Base64.getEncoder().encodeToString(compressedCoords.getBytes());
+    
+        // Create the global message
+        String globalMessage = String.format("[MC%s]\n%s was moved by magic! To view what coordinates and translate this message, install MagicTP from Modrinth.", encodedCoords, playerName);
+    
+        // Send the global message to all players
+        player.getServer().getPlayerList().broadcastSystemMessage(Component.literal(globalMessage), false);
+    
+        // Log the message to the server console
+        MagicTP.LOGGER.info("MagicTP: Sent encoded message: " + globalMessage);
     }
 
     private static void suppressTeleportMessage(ServerPlayer player) {
         player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(Component.empty()));
         MagicTP.LOGGER.debug("Suppressed teleport message for player: " + player.getName().getString());
+    }
+
+    // Compress the coordinates into a compact string
+    private static String compressCoordinates(Vec3 coords) {
+        // Represent each coordinate as a 4-bit value (0-9, ".", "|")
+        String x = String.format("%.1f", coords.x);
+        String y = String.format("%.1f", coords.y);
+        String z = String.format("%.1f", coords.z);
+        return x + "|" + y + "|" + z;
     }
 }
