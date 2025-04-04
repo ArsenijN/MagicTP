@@ -47,18 +47,33 @@ public class TeleportEventHandler {
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
         String playerName = player.getName().getString();
     
-        // Compress and encode the coordinates
-        String compressedCoords = compressCoordinates(to);
-        String encodedCoords = Base64.getEncoder().encodeToString(compressedCoords.getBytes());
+        // Compress and encode the player's name and coordinates
+        String compressedData = compressData(playerName, to);
+        String encodedData = Base64.getEncoder().encodeToString(compressedData.getBytes());
     
-        // Create the global message
-        String globalMessage = String.format("[MC%s]\n%s was moved by magic! To view what coordinates and translate this message, install MagicTP from Modrinth.", encodedCoords, playerName);
+        // Create the global message with a clickable link
+        Component globalMessage = Component.literal("[MC" + encodedData + "]\n")
+            .append(Component.literal(playerName + " was moved by magic! To view what coordinates and translate this message, install MagicTP from ")
+                .append(Component.literal("Modrinth")
+                    .withStyle(style -> style
+                        .withColor(0x00FF00) // Green color for the link
+                        .withClickEvent(new net.minecraft.network.chat.ClickEvent(
+                            net.minecraft.network.chat.ClickEvent.Action.OPEN_URL,
+                            "https://modrinth.com/mod/magictp"
+                        ))
+                        .withHoverEvent(new net.minecraft.network.chat.HoverEvent(
+                            net.minecraft.network.chat.HoverEvent.Action.SHOW_TEXT,
+                            Component.literal("Click to open the MagicTP Modrinth page")
+                        ))
+                    )
+                )
+            );
     
         // Send the global message to all players
-        player.getServer().getPlayerList().broadcastSystemMessage(Component.literal(globalMessage), false);
+        player.getServer().getPlayerList().broadcastSystemMessage(globalMessage, false);
     
         // Log the message to the server console
-        MagicTP.LOGGER.info("MagicTP: Sent encoded message: " + globalMessage);
+        MagicTP.LOGGER.info("MagicTP: Sent encoded message: " + globalMessage.getString());
     }
 
     private static void suppressTeleportMessage(ServerPlayer player) {
@@ -66,12 +81,11 @@ public class TeleportEventHandler {
         MagicTP.LOGGER.debug("Suppressed teleport message for player: " + player.getName().getString());
     }
 
-    // Compress the coordinates into a compact string
-    private static String compressCoordinates(Vec3 coords) {
-        // Represent each coordinate as a 4-bit value (0-9, ".", "|")
+    // Compress the player's name and coordinates into a compact string
+    private static String compressData(String playerName, Vec3 coords) {
         String x = String.format("%.1f", coords.x);
         String y = String.format("%.1f", coords.y);
         String z = String.format("%.1f", coords.z);
-        return x + "|" + y + "|" + z;
+        return playerName + "|" + x + "|" + y + "|" + z;
     }
 }
