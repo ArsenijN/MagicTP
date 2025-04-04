@@ -86,6 +86,30 @@ public class TeleportEventHandler {
         String x = String.format("%.1f", coords.x);
         String y = String.format("%.1f", coords.y);
         String z = String.format("%.1f", coords.z);
-        return playerName + "|" + x + "|" + y + "|" + z;
+    
+        // Combine the player's name and coordinates into a single string
+        String combined = playerName + "|" + x + "|" + y + "|" + z;
+    
+        // Compress the string into a byte array using 4-bit encoding
+        StringBuilder compressed = new StringBuilder();
+        for (char c : combined.toCharArray()) {
+            int value = switch (c) {
+                case '0' -> 0;
+                case '1' -> 1;
+                case '2' -> 2;
+                case '3' -> 3;
+                case '4' -> 4;
+                case '5' -> 5;
+                case '6' -> 6;
+                case '7' -> 7;
+                case '8' -> 8;
+                case '9' -> 9;
+                case '.' -> 10;
+                case '|' -> 11;
+                default -> throw new IllegalArgumentException("Invalid character: " + c);
+            };
+            compressed.append(Integer.toHexString(value));
+        }
+        return compressed.toString();
     }
 }
