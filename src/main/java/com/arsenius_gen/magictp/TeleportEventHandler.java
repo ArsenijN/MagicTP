@@ -46,11 +46,11 @@ public class TeleportEventHandler {
 
     private static void sendMagicMessage(ServerPlayer player, Vec3 from, Vec3 to) {
         String playerName = player.getName().getString();
-    
+
         // Compress and encode the player's name and coordinates
         String compressedData = compressData(playerName, to);
         String encodedData = Base64.getEncoder().encodeToString(compressedData.getBytes());
-    
+
         // Create the global message with a clickable link
         Component globalMessage = Component.literal("[MC" + encodedData + "]\n")
             .append(Component.literal(playerName + " was moved by magic! To view what coordinates and translate this message, install MagicTP from ")
@@ -68,10 +68,10 @@ public class TeleportEventHandler {
                     )
                 )
             );
-    
+
         // Send the global message to all players
         player.getServer().getPlayerList().broadcastSystemMessage(globalMessage, false);
-    
+
         // Log the message to the server console
         MagicTP.LOGGER.info("MagicTP: Sent encoded message: " + globalMessage.getString());
     }
@@ -83,16 +83,16 @@ public class TeleportEventHandler {
 
     // Compress the player's name and coordinates into a compact string
     private static String compressData(String playerName, Vec3 coords) {
+        // Encode the player's name using Base64
+        String encodedName = Base64.getEncoder().encodeToString(playerName.getBytes());
+    
+        // Compress the coordinates into a compact string
         String x = String.format("%.1f", coords.x);
         String y = String.format("%.1f", coords.y);
         String z = String.format("%.1f", coords.z);
     
-        // Combine the player's name and coordinates into a single string
-        String combined = playerName + "|" + x + "|" + y + "|" + z;
-    
-        // Compress the string into a byte array using 4-bit encoding
-        StringBuilder compressed = new StringBuilder();
-        for (char c : combined.toCharArray()) {
+        StringBuilder compressedCoords = new StringBuilder();
+        for (char c : (x + "|" + y + "|" + z).toCharArray()) {
             int value = switch (c) {
                 case '0' -> 0;
                 case '1' -> 1;
@@ -106,10 +106,12 @@ public class TeleportEventHandler {
                 case '9' -> 9;
                 case '.' -> 10;
                 case '|' -> 11;
-                default -> throw new IllegalArgumentException("Invalid character: " + c);
+                default -> throw new IllegalArgumentException("Invalid character in coordinates: " + c);
             };
-            compressed.append(Integer.toHexString(value));
+            compressedCoords.append(Integer.toHexString(value));
         }
-        return compressed.toString();
+    
+        // Combine the encoded name and compressed coordinates using a delimiter
+        return encodedName + ":" + compressedCoords;
     }
 }
