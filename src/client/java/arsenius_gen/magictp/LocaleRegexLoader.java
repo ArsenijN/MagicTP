@@ -16,17 +16,18 @@ public class LocaleRegexLoader {
     private static String cachedLocale = null;
 
     private static JsonObject loadLocaleData() {
-        String currentLocale = MinecraftClient.getInstance().getLanguageManager().getSelected();        if (cachedLocale != null && cachedLocale.equals(currentLocale)) {
+        String currentLocale = MinecraftClient.getInstance().getLanguageManager().getLanguage(); // Directly use getLanguage()
+        if (cachedLocale != null && cachedLocale.equals(currentLocale)) {
             return cachedLocaleData; // Return cached data if the locale hasn't changed
         }
-
+    
         MagicTP.LOGGER.debug("Loading locale data for: " + currentLocale);
         JsonObject localeData = loadLocaleFile(currentLocale);
         if (localeData == null) {
             MagicTP.LOGGER.warn("Locale file for " + currentLocale + " not found. Falling back to default locale: " + DEFAULT_LOCALE);
             localeData = loadLocaleFile(DEFAULT_LOCALE);
         }
-
+    
         cachedLocale = currentLocale;
         cachedLocaleData = localeData;
         return localeData;

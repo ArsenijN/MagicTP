@@ -1,25 +1,27 @@
 {
-	"schemaVersion": 1,
-	"id": "magictp",
-	"version": "1.0.0",
-	"name": "MagicTP",
-	"description": "MagicTP makes teleportation magical!",
-	"authors": ["arsenius_gen"],
-	"contact": {
-	  "homepage": "https://github.com/ArsenijN/MagicTP",
-	  "sources": "https://github.com/ArsenijN/MagicTP"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/magictp/icon.png",
-	"environment": "*",
-	"entrypoints": {
-	  "main": [
-		"arsenius_gen.magictp.MagicTP"
-	  ]
-	},
-	"depends": {
-	  "fabricloader": ">=0.16.11",
-	  "fabric": "*",
-	  "minecraft": "1.20.1"
-	}
-  }
+    "schemaVersion": 1,
+    "id": "magictp",
+    "version": "1.0.0",
+    "name": "MagicTP",
+    "description": "MagicTP makes teleportation magical!",
+    "authors": ["arsenius_gen"],
+    "contact": {
+        "sources": "https://github.com/ArsenijN/MagicTP"
+    },
+    "license": "CC0-1.0",
+    "icon": "assets/magictp/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "arsenius_gen.magictp.MagicTP"
+        ]
+    },
+    "mixins": {
+        "client": ["magictp.client.mixins.json"]
+    },
+    "depends": {
+        "fabricloader": ">=0.16.11",
+        "fabric": "*",
+        "minecraft": "1.20.1"
+    }
+}
