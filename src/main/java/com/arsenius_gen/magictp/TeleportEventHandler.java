@@ -48,6 +48,8 @@ public class TeleportEventHandler {
         String playerName = player.getName().getString();
 
         // Compress and encode the player's name and coordinates
+
+        //Add config logic here about player disclosure
         String compressedData = compressData(playerName, to);
         String encodedData = Base64.getEncoder().encodeToString(compressedData.getBytes());
 

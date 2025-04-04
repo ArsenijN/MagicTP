@@ -21,6 +21,7 @@ public class MagicTPConfig {
         public final ForgeConfigSpec.DoubleValue loggingThreshold;
         public final ForgeConfigSpec.BooleanValue magicMessageGlobal;
         public final ForgeConfigSpec.BooleanValue showExtendedConfigurables;
+        public final ForgeConfigSpec.BooleanValue playerDisclosure;
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.push("MagicTP Settings");
@@ -28,6 +29,10 @@ public class MagicTPConfig {
             showExtendedConfigurables = builder
                 .comment("Show extended (server-side) configurables in the configuration screen")
                 .define("showExtendedConfigurables", false);
+            
+            playerDisclosure = builder
+                .comment("Message player coordinates in the global teleportation message")
+                .define("playerDisclosure", true);
         
             announceUnsupportedLocaleOnJoin = builder
                 .comment("Announce unsupported locale in chat when the player joins or switches locale")

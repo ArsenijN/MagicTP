@@ -1,4 +1,10 @@
 # Upcoming changes:
+- [] Allow to enable and disable different parts of the MagicTP (like location disclosure that didn't added previously)
+- [ ] Add more Forge Minecraft versions (test what versions are supported)
+- [ ] Workout with Fabric
+- [ ] Test out the Neoforge and Quilt
+- [ ] Change locale message so it will be shown every time locale was changed to the uncompatible (and show the list of compatible like "..., compatible locales was: [en_us, uk_ua, ru_ru], change to one of them for proper message suppression. ...")
+- [ ] 
 - [ ] More verbose debugging (later)
 - [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
 - [ ] make `/rtp` works with config for default /rtp behaviour 
@@ -6,11 +12,17 @@
 - [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
 - [ ] Move handling of the `/tp` to the local
 
+# Changes: i265
+- [x] Backwards-compatibility with messageV1 type
+- [x] Now "new" message type was named simply "messageV2"
+- [x] Because mod has the [Modrinth page](https://modrinth.com/mod/magictp), now messageV2 displays a message about possible mod downloading for better message handling
+- [x] The fabric versions will come soon, as the different Forge versions
+
 # Changes: i249
 - [x] v.2.0.0!
 - [x] Message about untranslated locale and way to do (by creating issue request for adding the locale)
 - [x] Allow to disable the player location disclosure
-- [x] Allow to enable and disable different parts of the MagicTP (like location disclosure)
+- [x] Allow to enable and disable different parts of the MagicTP (like server global messaging)
 - [x] v.1.0.0 no longer supported due to fundamental changes in server-client connectivity
 - [x] Test that in-game change of locale didn't break anything
 
