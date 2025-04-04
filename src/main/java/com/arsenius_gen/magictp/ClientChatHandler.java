@@ -16,9 +16,10 @@ public class ClientChatHandler {
         // Load regex patterns dynamically based on the current locale
         String teleportRegex = LocaleRegexLoader.getRegex("teleport_regex");
         String teleportRegexNamed = LocaleRegexLoader.getRegex("teleport_regex_named");
+        String teleportRegexBackwardCompatibility = "^[a-zA-Z0-9_]+\\|-?\\d+(\\.\\d+)?\\|-?\\d+(\\.\\d+)?\\|-?\\d+(\\.\\d+)?$"; // change to "^[a-zA-Z0-9_]{3,16}\|-?\d+(\.\d+)?\|-?\d+(\.\d+)?\|-?\d+(\.\d+)?$" if your server can accept only official types of nicknames (3 to 16 characters)
 
         // Check if the message matches any teleportation pattern
-        if (message.matches(teleportRegex) || message.matches(teleportRegexNamed)) {
+        if (message.matches(teleportRegex) || message.matches(teleportRegexNamed) || message.matches(teleportRegexBackwardCompatibility)) {
             MagicTP.LOGGER.debug("Message matches teleportation pattern. Suppressing message.");
             event.setCanceled(true); // Suppress the teleportation message
         } else {

@@ -90,7 +90,7 @@ public class TeleportEventHandler {
         String x = String.format("%.1f", coords.x);
         String y = String.format("%.1f", coords.y);
         String z = String.format("%.1f", coords.z);
-    
+
         StringBuilder compressedCoords = new StringBuilder();
         for (char c : (x + "|" + y + "|" + z).toCharArray()) {
             int value = switch (c) {
@@ -106,11 +106,13 @@ public class TeleportEventHandler {
                 case '9' -> 9;
                 case '.' -> 10;
                 case '|' -> 11;
+                case '-' -> 12; // Add support for negative coordinates
                 default -> throw new IllegalArgumentException("Invalid character in coordinates: " + c);
             };
             compressedCoords.append(Integer.toHexString(value));
         }
     
+        MagicTP.LOGGER.debug("Combined the encoded name and compressed coordinates: " + encodedName + ":" + compressedCoords);
         // Combine the encoded name and compressed coordinates using a delimiter
         return encodedName + ":" + compressedCoords;
     }

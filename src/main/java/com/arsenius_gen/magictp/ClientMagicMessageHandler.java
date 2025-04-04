@@ -17,18 +17,26 @@ public class ClientMagicMessageHandler {
         String rawMessage = event.getMessage().getString();
         MagicTP.LOGGER.debug("Received chat message: " + rawMessage);
 
-        // Check if the message contains a MagicTP identifier
-        if (rawMessage.contains("was moved by magic!")) {
+        // Check for legacy format: "sku|0.0|0.0|0.0"
+        if (rawMessage.contains("|") && !rawMessage.contains("[")) { 
+            handleLegacyFormat(rawMessage, event);
+            return;
+        }
+
+        // Handle the new Base64 format
+        if (rawMessage.contains("was moved by magic!") || rawMessage.contains("[")) {
             try {
                 // Extract the Base64-encoded part
-                int startIndex = rawMessage.indexOf("[") + 1;
+                int startIndex = 3; // Adjust if needed
                 int endIndex = rawMessage.indexOf("]");
                 if (startIndex == 0 || endIndex == -1) {
                     MagicTP.LOGGER.error("Malformed MagicTP message: Missing Base64-encoded part.");
                     return;
                 }
 
+                // Strip brackets and decode the Base64 string
                 String encodedPart = rawMessage.substring(startIndex, endIndex);
+                MagicTP.LOGGER.debug("Extracted Base64 part: " + encodedPart);
                 String decodedData = new String(Base64.getDecoder().decode(encodedPart));
 
                 // Decompress the data
@@ -38,28 +46,41 @@ public class ClientMagicMessageHandler {
                     return;
                 }
 
-                String playerName = parts[0];
-                double x = Double.parseDouble(parts[1]);
-                double y = Double.parseDouble(parts[2]);
-                double z = Double.parseDouble(parts[3]);
-
-                // Format the coordinates
-                String coords = String.format("%.1f %.1f %.1f", x, y, z);
-
-                // Get the localized message
-                String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
-
-                // Display the localized message
-                if (Minecraft.getInstance().player != null) {
-                    Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
-                    MagicTP.LOGGER.debug("Decoded and displayed localized message: " + localizedMessage);
-                }
+                displayTeleportMessage(parts[0], parts[1], parts[2], parts[3]);
 
                 // Cancel the original raw message
                 event.setCanceled(true);
             } catch (Exception e) {
                 MagicTP.LOGGER.error("Failed to decode MagicTP message: " + rawMessage, e);
             }
+        }
+    }
+
+    private static void handleLegacyFormat(String message, ClientChatReceivedEvent event) {
+        String[] parts = message.split("\\|");
+        if (parts.length != 4) {
+            MagicTP.LOGGER.error("Malformed legacy MagicTP message: " + message);
+            return;
+        }
+
+        String playerName = parts[0];
+        String x = parts[1];
+        String y = parts[2];
+        String z = parts[3];
+
+        displayTeleportMessage(playerName, x, y, z);
+
+        // Cancel the original raw message
+        event.setCanceled(true);
+    }
+
+    private static void displayTeleportMessage(String playerName, String x, String y, String z) {
+        String coords = String.format("%.1f %.1f %.1f", Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z));
+        String localizedMessage = LocaleRegexLoader.getLocalizedMessage("teleport_message", playerName, coords);
+
+        if (Minecraft.getInstance().player != null) {
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal(localizedMessage));
+            MagicTP.LOGGER.debug("Displayed teleport message: " + localizedMessage);
         }
     }
 
@@ -75,6 +96,7 @@ public class ClientMagicMessageHandler {
     
         // Decompress the coordinates
         StringBuilder decompressedCoords = new StringBuilder();
+
         for (char c : parts[1].toCharArray()) {
             int value = Integer.parseInt(String.valueOf(c), 16);
             char decodedChar = switch (value) {
@@ -90,6 +112,7 @@ public class ClientMagicMessageHandler {
                 case 9 -> '9';
                 case 10 -> '.';
                 case 11 -> '|';
+                case 12 -> '-'; // Support for negative coordinates
                 default -> throw new IllegalArgumentException("Invalid value in compressed coordinates: " + value);
             };
             decompressedCoords.append(decodedChar);
