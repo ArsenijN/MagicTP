@@ -17,7 +17,7 @@
 - [x] Add ry_ua locale
 - [x] Better message about unsupported language
 - [x] Now own locales can be added to `\mods\magictp\lang\[locale_name].json`
-- [x] Change locale message so it will be shown every time locale was changed to the uncompatible (and show the list of compatible like "..., compatible locales was: [en_us, uk_ua, ru_ru], change to one of them for proper message suppression. ...")
+- [x] Change locale message so it will be shown every time locale was changed to the uncompatible (and show the list of compatible like `..., compatible locales was: [en_us, uk_ua, ru_ru], change to one of them for proper message suppression. ...`)
 
 # Changes: i265
 - [x] Backwards-compatibility with messageV1 type
@@ -32,6 +32,9 @@
 - [x] Allow to enable and disable different parts of the MagicTP (like server global messaging)
 - [x] v.1.0.0 no longer supported due to fundamental changes in server-client connectivity
 - [x] Test that in-game change of locale didn't break anything
+
+# Changes: i248
+- [x] Latest v1.0.0 release. Now v1 will be depecated and no longer updated because of fundamental changes in messageV2 engine
 
 # Changes: i179
 - [x] Tested ru_ru locale (for correct regex usage)
