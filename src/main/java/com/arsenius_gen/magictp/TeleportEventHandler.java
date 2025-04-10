@@ -10,6 +10,8 @@ import net.minecraftforge.event.TickEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Base64;
+import java.util.Locale; // Add this import
+
 
 @Mod.EventBusSubscriber
 public class TeleportEventHandler {
@@ -62,7 +64,7 @@ public class TeleportEventHandler {
     
         // Create the global message
         Component globalMessage = Component.literal(messageText)
-            .append(Component.literal(" To view more, install MagicTP from ")
+            .append(Component.literal(" To view more, install latest version of MagicTP from ")
                 .append(Component.literal("Modrinth")
                     .withStyle(style -> style
                         .withColor(0x00FF00)
@@ -92,10 +94,10 @@ public class TeleportEventHandler {
 
     private static String compressData(String playerName, Vec3 coords) {
         String encodedName = Base64.getEncoder().encodeToString(playerName.getBytes());
-        String x = String.format("%.1f", coords.x);
-        String y = String.format("%.1f", coords.y);
-        String z = String.format("%.1f", coords.z);
-
+        String x = String.format(Locale.US, "%.1f", coords.x); // Use Locale.US
+        String y = String.format(Locale.US, "%.1f", coords.y); // Use Locale.US
+        String z = String.format(Locale.US, "%.1f", coords.z); // Use Locale.US
+    
         StringBuilder compressedCoords = new StringBuilder();
         for (char c : (x + "|" + y + "|" + z).toCharArray()) {
             int value = switch (c) {

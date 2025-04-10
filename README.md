@@ -1,6 +1,11 @@
 # MagicTP
 The mod that makes TP like magic!
 
+# About
+MagicTP was lightweight, chat feature thing that adds some "magic" for mods that use portals, teleportation or even - the ender pearls!
+
+(about lightweightness: ![showcase lightweightness of mod](image.png), you can check it out on [Spark](https://spark.lucko.me/uxLIGde7kH))
+
 Known problems: aka ToDo
 
 - [x] ~~uk_ua have not silent player movement ("[Ігрок2: Телепортовано Ігрок1 на x y z]") - fixed in i113~~

@@ -1,7 +1,5 @@
 {
   "teleport_regex": "^\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]$",
   "teleport_regex_named": "^\\[.*: Teleported .* to .*\\]",
-  "teleport_message": "{player} was moved with magic to {coords}",
-  "teleport_message_closured": "{player} was moved with magic!",
-  "teleport_regex_message_closured": "\\[MC\\]\n.* was moved by magic! To view more, install MagicTP.*"
+  "teleport_message": "{player} was moved with magic to {coords}"
 }

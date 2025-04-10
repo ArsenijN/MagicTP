@@ -1,4 +1,5 @@
 # Upcoming changes:
+- [ ] Test ry_ua and other locales, test mod fully
 - [ ] Allow change some settings about player disclosure visually
 - [ ] Add more Forge Minecraft versions (test what versions are supported)
 - [ ] Workout with Fabric
@@ -9,6 +10,10 @@
 - [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically" message)
 - [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
 - [ ] Move handling of the `/tp` to the local
+
+# Changes: i282 aka v.2.0.0-release
+- [x] FIX SERVER CRASH ON PLAYER LOGIN! ~~Or: Create Vanilla+ isn't compatible with mod... Strange, isn't?~~
+- [x] Performance test: ~~good (0.2~2.5% server thread in Create Vanilla+ modpack:  https://spark.lucko.me/Awi8ZB262T)~~ [very good actually!](https://spark.lucko.me/uxLIGde7kH)
 
 # Changes: i276
 - [x] Allow to enable and disable different parts of the MagicTP (like location disclosure that didn't added previously) (change playerDisclosure in config)
@@ -33,7 +38,7 @@
 - [x] v.1.0.0 no longer supported due to fundamental changes in server-client connectivity
 - [x] Test that in-game change of locale didn't break anything
 
-# Changes: i248
+# Changes: i248 aka v.1.0.0-release
 - [x] Latest v1.0.0 release. Now v1 will be depecated and no longer updated because of fundamental changes in messageV2 engine
 
 # Changes: i179

@@ -88,7 +88,12 @@ public class LocaleRegexLoader {
         }
 
         return Component.literal("")
-            .append("MagicTP: This language (" + lang + ") isn't supported right now. ")
+            .append("MagicTP")
+                .withStyle(style -> style
+                    .withColor(0x57e2cb) // My favourite color that I used also in mod icon as base color
+                    .withBold(true)
+                )
+            .append(": This language (" + lang + ") isn't supported right now. ")
             .append("You can create /mods/magictp/lang/" + lang + ".json to add your own language, ")
             .append("or open an issue on ")
             .append(Component.literal("GitHub")
