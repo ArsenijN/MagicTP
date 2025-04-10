@@ -29,7 +29,7 @@ If player doesn't have mod installed, but the server has - the message in his ch
 ## Important Notes
 Because of some specifics of the current code /tp handling, the mod requires to exists on the server side to work (for now)
 
-Also, if you want to use mod on server - concider to use **`release v2.0.0`** instead latest **`beta v2.0.0`**, because latest betas **may have untested server compatibility** (with modpacks also)
+Also, if you want to use mod on server - consider to use **`release v2.0.0`** instead latest **`beta v2.0.0`**, because latest betas **may have untested server compatibility** (with modpacks also)
 
 
 ## Known issues:
