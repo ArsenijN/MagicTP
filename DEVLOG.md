@@ -11,7 +11,7 @@
 - [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
 - [ ] Move handling of the `/tp` to the local
 
-# Changes: i282 aka v.2.0.0-release
+# Changes: i283 aka v.2.0.0-release
 - [x] FIX SERVER CRASH ON PLAYER LOGIN! ~~Or: Create Vanilla+ isn't compatible with mod... Strange, isn't?~~
 - [x] Performance test: ~~good (0.2~2.5% server thread in Create Vanilla+ modpack:  https://spark.lucko.me/Awi8ZB262T)~~ [very good actually!](https://spark.lucko.me/uxLIGde7kH)
 
