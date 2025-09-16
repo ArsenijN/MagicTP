@@ -1,9 +1,9 @@
 # Upcoming changes:
+- [ ] ~~Make version for Fabric~~ try to fix Kilt compatibility instead
 - [ ] Test ry_ua and other locales, test mod fully
 - [ ] Allow change some settings about player disclosure visually
 - [ ] Add more Forge Minecraft versions (test what versions are supported)
-- [ ] Workout with Fabric
-- [ ] Test out the Neoforge and Quilt
+- [ ] Test out the Neoforge and Quilt (maybe won't)
 - [ ] More verbose debugging (later)
 - [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
 - [ ] make `/rtp` works with config for default /rtp behaviour 
