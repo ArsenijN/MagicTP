@@ -34,7 +34,7 @@ Also, if you want to use mod on server - consider to use **`release v2.0.0`** in
 
 ## Known issues:
 For the latest **stable**, **release** build, there are known issues:
-- **no issues!**
+- **Incompatible (at least in modpack) with Kilt on Fabric((**
 
 Please consider to check the **`DEVLOG.md`** as the source of known issues and upcoming (& changelog) changes
 
