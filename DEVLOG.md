@@ -1,15 +1,19 @@
 # Upcoming changes:
-- [ ] ~~Make version for Fabric~~ try to fix Kilt compatibility instead
 - [ ] Test ry_ua and other locales, test mod fully
-- [ ] Allow change some settings about player disclosure visually
+- [ ] More verbose debugging info (will be done later)
+- [ ] Allow change some settings about player disclosure visually (more GUI settings, I'll need to see what doesn't added to GUI)
+
+
+- [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
+- [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
+- [ ] make `/rtp` works with config for default /rtp behavior (basically allow to change defaults in config file)
+- [ ] Move handling of the `/tp` to the local (so basically move to client side or what..?)
+- [ ] ~~Make version for Fabric~~ make attempts to fix Kilt compatibility instead
 - [ ] Add more Forge Minecraft versions (test what versions are supported)
 - [ ] Test out the Neoforge and Quilt (maybe won't)
-- [ ] More verbose debugging (later)
-- [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
-- [ ] make `/rtp` works with config for default /rtp behaviour 
-- [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically" message)
-- [ ] Allow to enable and disable different parts of the MagicTP (like `/rtp` and other)
-- [ ] Move handling of the `/tp` to the local
+- [ ] More detailed description because of accidental thing that makes "magician" mods became more "magic" (portals makes use of the "moved magically" message) (I don't understand what this means now)
+
+(note: ToDo was sorted by importance of things to be implemented)
 
 # Changes: i283 aka v.2.0.0-release
 - [x] FIX SERVER CRASH ON PLAYER LOGIN! ~~Or: Create Vanilla+ isn't compatible with mod... Strange, isn't?~~
