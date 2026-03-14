@@ -2,6 +2,9 @@
 - [ ] Test ry_ua and other locales, test mod fully
 - [ ] More verbose debugging info (will be done later)
 - [ ] Allow change some settings about player disclosure visually (more GUI settings, I'll need to see what doesn't added to GUI)
+- [ ] Breaking changes for 3.0.0: loggingThreshold will be as "including" value, now "excluding"
+- [ ] Not sure about right translate for ry_ua because it's a more likely a dialect for Ukrainian that came from Zakarpattya, but I'm not a citisen of Zakarpattya, I'm the citizen of Kharkiv that lives in Uzhhorod for now. I'll ask my grandmother about that, maybe I'll add some modification like uzh_ua for Uzhhorod main dialect... Will be interesting to do :)
+- [ ] About version test: works only on 1.20.1. Even 1.20.2 doesn't work
 
 
 - [ ] `/rtp` with ranges (like `/rtp 12500 5` where `12500` was base coordinates and `5` was margin; margin`×100`, no floating point allowed, min `1`)
