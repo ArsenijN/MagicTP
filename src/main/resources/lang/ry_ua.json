@@ -1,5 +1,5 @@
 {
-  "teleport_regex": "^\\[.*: Teleported .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]$",
-  "teleport_regex_named": "^\\[.*: Teleported .* to .*\\]",
+  "teleport_regex": "^\\[.*: Перенесено .* to -?\\d+\\.\\d+, -?\\d+\\.\\d+, -?\\d+\\.\\d+\\]$",
+  "teleport_regex_named": "^\\[.*: Перенесено .* to .*\\]",
   "teleport_message": "{player} було чарівно перенесено до {coords}"
 }
